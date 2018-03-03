@@ -68,9 +68,13 @@ def get_password():
 #----------------------------
 
 def gen_auth_header(username, password):
+    encoding = "utf-8"
     unencoded = "{0}:{1}".format(username, password)
-    encoded = base64.b64encode(bytes(unencoded, "utf-8"))
+    encoded = base64.b64encode(bytes(unencoded, encoding))
+    # bytes back to string
+    encoded = encoded.decode(encoding)
     header = "Basic {0}".format(encoded)
+    print(header)
     return header
 
 
@@ -193,4 +197,5 @@ def post(url_ext, query_params={}, payload={}, custom_err=None, timeout=DEFAULT_
     json = {}
 
     r = requests.post(url, headers=headers, params=query_params, data=payload, timeout=timeout)
+    print(r.url)
     return handle_response(r, "POST", custom_err)
