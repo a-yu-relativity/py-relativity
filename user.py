@@ -4,6 +4,7 @@ user.py
 CRUD operations on users in Relativity
 """
 from pprint import pprint
+import json
 import client
 
 def create(firstname, lastname, email, password):
@@ -48,9 +49,9 @@ def create(firstname, lastname, email, password):
             "Artifact Type Name": "Choice"
         },
         "Password Action": {
-        "Artifact ID": 1015048,
-        "Artifact Type ID": 7,
-        "Artifact Type Name": "Choice"
+            "Artifact ID": 1015048,
+            "Artifact Type ID": 7,
+            "Artifact Type Name": "Choice"
         },
         "Password": password,
         "Document Skip": {
@@ -68,6 +69,7 @@ def create(firstname, lastname, email, password):
         }
     }
 
+    payload = json.dumps(payload)
     # specify a custom error message
     error = "Failed to create user with email {0}".format(email)
     results = client.post(url_ext, payload=payload, custom_err=error)
@@ -77,10 +79,11 @@ def create(firstname, lastname, email, password):
 def main():
     firstname = "Albert"
     lastname = "Einstein"
-    email = "albert.einstein@relativity.com"
-    password = "Password12345!"
+    email = "a.einstein@relativity.com"
+    password = "Pass1234!"
 
-    create(firstname, lastname, email, password)
+    result = create(firstname, lastname, email, password)
+    pprint(result)
 
 
 if __name__ == "__main__":

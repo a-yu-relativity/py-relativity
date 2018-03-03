@@ -74,7 +74,6 @@ def gen_auth_header(username, password):
     # bytes back to string
     encoded = encoded.decode(encoding)
     header = "Basic {0}".format(encoded)
-    print(header)
     return header
 
 
@@ -121,11 +120,13 @@ def handle_response(r, http_method, custom_err):
         if r.text:
             json = r.json()
         else:
-            print("{0} returned empty response.".format(http_method))
+            print("{0} returned an empty response.".format(http_method))
     else:
         if custom_err is not None:
             print(custom_err)
         print("Status code: " + str(r.status_code))
+        if r.text:
+            print(r.text)
         r.raise_for_status()
     return json
 
@@ -156,8 +157,6 @@ def get(url_ext, query_params={}, custom_err=None, timeout=DEFAULT_TIMEOUT):
         the response from the request
     """
     url = get_url() + url_ext
-    json = {}
-
     # get request headers
     headers = get_headers()
 
@@ -194,8 +193,5 @@ def post(url_ext, query_params={}, payload={}, custom_err=None, timeout=DEFAULT_
     """
     url = get_url() + url_ext
     headers = get_headers()
-    json = {}
-
     r = requests.post(url, headers=headers, params=query_params, data=payload, timeout=timeout)
-    print(r.url)
     return handle_response(r, "POST", custom_err)
