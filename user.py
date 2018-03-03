@@ -33,15 +33,15 @@ def create(firstname, lastname, email, password):
             "Artifact Type ID": 7,
             "Artifact Type Name": "Choice"
         },
-        "Beta User": true,
-        "Change Settings": true,
+        "Beta User": True,
+        "Change Settings": True,
         "Trusted IPs": "",
-        "Relativity Access": true,
-        "Advanced Search Public By Default": false,
-        "Native Viewer Cache Ahead": true,
-        "Change Password": true,
+        "Relativity Access": True,
+        "Advanced Search Public By Default": False,
+        "Native Viewer Cache Ahead": True,
+        "Change Password": True,
         "Maximum Password Age": 0,
-        "Change Password Next Login": false,
+        "Change Password Next Login": False,
         "Send Password To": {
             "Artifact ID": 1015049,
             "Artifact Type ID": 7,
@@ -59,8 +59,8 @@ def create(firstname, lastname, email, password):
             "Artifact Type Name": "Choice"
         },
         "Data Focus": 1,
-        "Keyboard Shortcuts": true,
-        "Enforce Viewer Compatibility": true,
+        "Keyboard Shortcuts": True,
+        "Enforce Viewer Compatibility": True,
         "Skip Default Preference": {
             "Artifact ID": 1015044,
             "Artifact Type ID": 7,

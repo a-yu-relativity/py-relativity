@@ -42,8 +42,11 @@ def get_url():
     Returns the base URL of the instance
     """
     content = get_creds(CREDS_FILE)
-    return content[0]
-    
+    url = content[0]
+    # get rid of trailing slash
+    if url[len(url) - 1] == "/":
+        return url[:len(url) - 1]
+    return url
 
 
 def get_username():
@@ -148,7 +151,7 @@ def get(url_ext, query_params={}, custom_err=None, timeout=DEFAULT_TIMEOUT):
     json : a JSON object (as Python dict)
         the response from the request
     """
-    url = get_url + url_ext
+    url = get_url() + url_ext
     json = {}
 
     # get request headers
@@ -185,7 +188,7 @@ def post(url_ext, query_params={}, payload={}, custom_err=None, timeout=DEFAULT_
     json : a JSON object (as Python dict)
         the response from the request
     """
-    url = base_url + url_ext
+    url = get_url() + url_ext
     headers = get_headers()
     json = {}
 
