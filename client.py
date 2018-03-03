@@ -123,10 +123,10 @@ def handle_response(r, http_method, custom_err):
     return json
 
 
-def get(url_ext, user_query={}, custom_err=None, timeout=DEFAULT_TIMEOUT):
+def get(url_ext, query_params={}, custom_err=None, timeout=DEFAULT_TIMEOUT):
     """
     Performs a GET on base_url + url_ext
-    e.g. https://example.discourse.com + /search.json
+    e.g. https://my-instance.com + /relativity.REST
 
     Parameters
     ----------
@@ -134,11 +134,14 @@ def get(url_ext, user_query={}, custom_err=None, timeout=DEFAULT_TIMEOUT):
         this is the URL endpoint we are hitting
         (without the host name)
 
-    user_query: dict
+    query_params: dict
         specifies any additional query strings and/or replaces default ones
 
     custom_err: string
         specifies a custom error message
+
+    timeout: int
+        max time the request should wait in seconds
 
     Returns
     -------
@@ -151,34 +154,40 @@ def get(url_ext, user_query={}, custom_err=None, timeout=DEFAULT_TIMEOUT):
     # get request headers
     headers = get_headers()
 
-    r = requests.get(url, params=user_query, headers=headers, timeout=timeout)
-    if r.status_code == requests.codes.ok:
-        if r.text:
-            json = r.json()
-        else:
-            print("GET returned empty response.")
-    else:
-        if custom_err is not None:
-            print(custom_err)
-        print("Status code: " + str(r.status_code))
-        r.raise_for_status()
-
-    return json
+    r = requests.get(url, params=query_params, headers=headers, timeout=timeout)
+    return handle_response(r, "GET", custom_err)
 
 
-def post(url_ext, payload={}, custom_err=None, timeout=DEFAULT_TIMEOUT):
+def post(url_ext, query_params={}, payload={}, custom_err=None, timeout=DEFAULT_TIMEOUT):
+    """
+    Performs a POST on the base_url + url_ext
+
+    Parameters
+    ----------
+    url_ext: string
+        this is the URL endpoint we are hitting
+        (without the host name)
+
+    query_params: dict
+        specifies any additional query strings and/or replaces default ones
+
+    payload: dict
+        JSON payload for request
+
+    custom_err: string
+        specifies a custom error message
+
+    timeout: int
+        max time the request should wait in seconds
+
+    Returns
+    -------
+    json : a JSON object (as Python dict)
+        the response from the request
+    """
     url = base_url + url_ext
     headers = get_headers()
     json = {}
 
-    r = requests.post(url, headers=headers, data=payload, timeout=timeout)
-    if r.status_code == requests.codes.ok:
-        if r.text:
-            json = r.json()
-        else:
-            print("POST returned empty response.")
-    else:
-        if custom_err is not None:
-            print(custom_err)
-        print("Status code: " + str(r.status_code))
-        r.raise_for_status()
+    r = requests.post(url, headers=headers, params=query_params, data=payload, timeout=timeout)
+    return handle_response(r, "POST", custom_err)
